@@ -14,10 +14,18 @@ public class Bird : MonoBehaviour
 
     float cx, cz;
     Transform t;
+    [SerializeField]
+    float starting_speed;
 
     float speed = 0;
 
+    [SerializeField]
+    float speed_changing_ratio;
+
     bool fall = false;
+
+
+
     void Update()
     {
         if (Input.touchCount > 0)
@@ -26,27 +34,26 @@ public class Bird : MonoBehaviour
             if (touch.phase == TouchPhase.Began)
             {
                 //t.position = new Vector3(cx, t.position.y+speed, cz);
-                speed = 0.18f;
+                speed = starting_speed;
+                fall = false;
             }
         }
 
-            speed = 0.005f;
-
-            if (speed > 0 && !fall)
+        if (speed > 0 && !fall)
+        {
+            t.position = new Vector3(cx, t.position.y + speed, cz);
+            speed -= speed_changing_ratio;
+            if (speed <= 0) 
             {
-                t.position = new Vector3(cx, t.position.y + speed, cz);
-                speed -= 0.005f;
-                if (speed <= 0) 
-                {
-                    fall = true;
-                }
-            }
-
-            if (fall)
-            {
-                t.position = new Vector3(cx, t.position.y - speed, cz);
-                speed += 0.005f;
+                fall = true;
             }
         }
 
+        if (fall)
+        {
+            t.position = new Vector3(cx, t.position.y - speed, cz);
+            speed += speed_changing_ratio;
+        }
     }
+
+}
