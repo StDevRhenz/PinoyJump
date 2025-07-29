@@ -4,9 +4,16 @@ using UnityEngine;
 public class Bird : MonoBehaviour
 {
     // Start is called once before the first execution of Update after the MonoBehaviour is created
+
+    private SpriteRenderer spriteRenderer;
+    public Sprite jumpUp;
+    public Sprite jumpDown;
+
     void Start()
     {
         t = gameObject.transform;
+        spriteRenderer = GetComponent<SpriteRenderer>();
+        spriteRenderer.sprite = jumpDown;
         Debug.Log(t.position.y);
         cx = t.position.x;
         cz = t.position.z;
@@ -34,6 +41,7 @@ public class Bird : MonoBehaviour
             if (touch.phase == TouchPhase.Began)
             {
                 //t.position = new Vector3(cx, t.position.y+speed, cz);
+                spriteRenderer.sprite = jumpUp;
                 speed = starting_speed;
                 fall = false;
             }
@@ -45,6 +53,7 @@ public class Bird : MonoBehaviour
             speed -= speed_changing_ratio;
             if (speed <= 0) 
             {
+                spriteRenderer.sprite = jumpDown;
                 fall = true;
             }
         }
